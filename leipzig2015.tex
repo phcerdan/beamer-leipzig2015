@@ -1,6 +1,8 @@
 \documentclass[10pt]{beamer}
 
 \usetheme{m}
+\metroset{progressbar=frametitle}
+\setbeamercolor{progress bar}{mLightGreen}
 
 \usepackage{booktabs}
 \usepackage[scale=2]{ccicons}
@@ -8,13 +10,17 @@
 \usepackage{pgfplots}
 \usepgfplotslibrary{dateplot}
 
-\title{Metropolis}
-\subtitle{A modern beamer theme}
+\title{Image Analysis on Biopolymer Networks}
+\subtitle{Characterization using graphs}
 \date{\today}
-\author{Pablo Hernandez-Cerdan}
-\institute{MacDiarmid Institute, New Zealand
-hola}
-% \titlegraphic{\hfill\includegraphics[height=1.5cm]{logo/logo}}
+\author{\textbf{Pablo Hernandez-Cerdan} \emph{\newline \textit{Main Advisor}:} \underline{M.A.K Williams}}
+\institute{PhD. Student \newline
+    Insitute of Fundamental Sciences, Massey University\newline
+    MacDiarmid Institute for Advanced Materials and Nanotechnology\newline
+    Riddet Institute\newline
+    \alert{New Zealand}
+}
+% \titlegraphic{\hfill\includegraphics[height=1.5cm]{./logo.pdf}}
 
 \begin{document}
 
@@ -23,10 +29,11 @@ hola}
 \begin{frame}
   \frametitle{Table of Contents}
   \setbeamertemplate{section in toc}[sections numbered]
+  % \tableofcontents[hideallsubsections]
   \tableofcontents[hideallsubsections]
 \end{frame}
 
-\section{Introduction}
+\section{Intro: Biopolymers in the meso-scale}
 
 \begin{frame}[fragile]
   \frametitle{mtheme}
@@ -52,7 +59,7 @@ hola}
   for which \textsc{Metropolis} provides a nice progress indicator \ldots
 \end{frame}
 
-\section{Elements}
+\section{Image Analysis}
 
 \begin{frame}[fragile]
   \frametitle{Typography}
@@ -228,15 +235,13 @@ or show \textbf{bold} results.\end{verbatim}
     \end{tikzpicture}
   \end{figure}
 \end{frame}
-\begin{frame}{Quotes}
-  \begin{quote}
-    Veni, Vidi, Vici
-  \end{quote}
-\end{frame}
 
 \begin{frame}{References}
   Some references to showcase [allowframebreaks] \cite{knuth92,ConcreteMath,Simpson,Er01,greenwade93}
 \end{frame}
+
+
+\section{Graph Characterization}
 
 \section{Conclusion}
 
