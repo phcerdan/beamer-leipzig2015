@@ -2,13 +2,15 @@
 
 \usetheme{m}
 \metroset{progressbar=frametitle}
-\setbeamercolor{progress bar}{mLightGreen}
-
+\usepackage[absolute,overlay]{textpos}
+\newcommand{\tikzmark}[1]{\tikz[remember picture] \node[coordinate] (#1) {#1};}
 \usepackage{pgfpages}
 % \setbeameroption{show notes on second screen}
 \usepackage{multimedia}
 \usepackage{booktabs}
 
+
+\usepackage{caption}
 \usepackage[square]{natbib} % Bibliography, citing: [\citet{storm_nonlinear_2005}]
 \usepackage[scale=2]{ccicons}
 
@@ -18,13 +20,13 @@
 \graphicspath{{Videos/}}
 \title{Image Analysis on Biopolymer Networks}
 \subtitle{Characterization using graphs}
-\date{\today}
-\author{\textbf{Pablo Hernandez-Cerdan} \emph{\newline \textit{Main Advisor}:} \underline{M.A.K Williams}}
+\author{\textbf{Pablo Hernandez-Cerdan} \emph{\newline \textit{Main Advisor}:} Prof. \underline{M.A.K Williams}}
+\date{Leipzig University -- \today}
 \institute{PhD. Student \newline
-    Institute of Fundamental Sciences, Massey University\newline
-    MacDiarmid Institute for Advanced Materials and Nanotechnology\newline
-    Riddet Institute\newline
-    \alert{New Zealand}
+  Institute of Fundamental Sciences, Massey University\newline
+  MacDiarmid Institute for Advanced Materials and Nanotechnology\newline
+  Riddet Institute\newline
+  New Zealand
 }
 % \titlegraphic{\hfill\includegraphics[height=1.5cm]{./logo.pdf}}
 \begin{document}
@@ -38,135 +40,355 @@
   \tableofcontents[hideallsubsections]
 \end{frame}
 
-\section{Intro: Biopolymers in the meso-scale}
-\begin{frame}[t]{Motivation: Onset of Strain-Stiffening}
-    \citep{storm_nonlinear_2005}
+\section{Motivation: Role of network architecture}
+\begin{frame}{Sources of Strain-Stiffening}
+  \begin{itemize}
+    \item \citep{storm_nonlinear_2005}: strain stiffening arises from non linearity of single chains.
+      Under the assumption that the network is isotropic and homogeneous.
+      What does happens under other architectures?
+    \item  \citep{onck_alternative_2005}, at the same time an alternative explanation of strain stiffening arised exclusively from
+      network connectivity and relative orientation of the fibers.
+  \end{itemize}
 \end{frame}
-\begin{frame}[t]{Strain-Stiffening: Validity of Affine Deformation approximation}
-    \begin{center} \citep{wilhelm_elasticity_2003} \citep{onck_alternative_2005} \end{center}
-    \begin{columns}[T,onlytextwidth]
-      \column{0.5\textwidth}
-        \textbf{Affine transformations valid at:}
+\begin{frame}{Strain-Stiffening: Validity of Affine Deformation approximation in semi-flexible polymers}
+  \note{ \citep{wilhelm_elasticity_2003} \citep{onck_alternative_2005}}
+  \begin{columns}[onlytextwidth]
+    \column{0.5\textwidth}
+    \only<1,3->{
+      \begin{exampleblock}{Affine transformations valid when: }
+        \footnotesize{\textbf<4->{In Homogeneous and Isotropic Network}}
         \begin{itemize}
-            \item Stiff Components
-            \item Dense Networks
+          \item Stiff Chains
+          \item Dense Networks
         \end{itemize}
-        \textbf{Non-Affine at:}
+      \footnotesize{\citep{wilhelm_elasticity_2003}}
+      \end{exampleblock}
+    }
+    \only<2>{
+      \begin{alertblock}{Non-Affine range when:}
+        \footnotesize{In Homogeneous and Isotropic Network}
         \begin{itemize}
-            \item Compliant Components
-            \item Coarse Networks
+          \item Compliant Chains
+          \item Coarse Networks
         \end{itemize}
+        \footnotesize{\citep{wilhelm_elasticity_2003}}
+      \end{alertblock}
+    }
+    \column{0.5\textwidth}
+    \begin{figure}[htpb]
+      \centering
+      \includegraphics[width=0.9\textwidth]{./Figures/nonaffine.png}
+      \caption*{\footnotesize{\citep{basu_nonaffine_2011, wen_non-affine_2012}}}
+    \end{figure}
+    \note{
+      Difference between affine
+      and non-affine deformation of a network under shear. Figure adopted from
+      references
+    }
+  \end{columns}
+  \only<2->{
+  \begin{columns}[onlytextwidth]
+    \column{0.5\textwidth}
+    \begin{figure}[htpb]
+      \includegraphics[width=0.7\textwidth]{./Figures/nonaffine-head.png}
+      \caption*{\footnotesize{\textbf{L:} Molecular Weight, \textbf{c:} Concentration
+      \citep{head_mechanical_2005}}}
+    \end{figure}
+    \only<3->{
       \column{0.5\textwidth}
-        \includegraphics[width=0.9\textwidth]{./Figures/nonaffine.png}
-        \newline
-        \citep{wen_non-affine_2012,basu_nonaffine_2011}
-        \note{
-            Difference between affine
-            and non-affine deformation of a network under shear. Figure adopted from
-            references
-        }
-        \newline
-        \includegraphics[width=0.9\textwidth]{./Figures/nonaffine-head.png}
-        \newline
-        \citep{head_mechanical_2005}
-        \note{
-            Molecular weight (L) and concentration (c). The solid line represents
-            the rigidity percolation transition, where rigidity first appears at
-            macroscopic level
-        }
-    \end{columns}
+      \begin{exampleblock}{Pre-stress and architecture role: }
+        \footnotesize{
+        Affine approx. is valid at constrained networks}
+        \begin{itemize}
+          \item Initial pre-stress constrains networks.
+          \footnotesize{\citep{cioroianu_disorder_2015}}
+          \item<4> Role of \textbf{Anisotropy} or \textbf{Architecture}?
+        \end{itemize}
+      \end{exampleblock}
+    }
+  \note{
+    Molecular weight (L) and concentration (c). The solid line represents
+    the rigidity percolation transition, where rigidity first appears at
+    macroscopic level
+  }
+\end{columns}
+}
 \end{frame}
 \begin{frame}
   \frametitle{Goals and research questions}
+  % \metroset{block=fill}
+  \begin{exampleblock}{}
   \begin{itemize}
-      \item Biopolymer gels properties are known to rely heavily on its single-chain components, but also on the way they are linked and interconnected to each other.
-      \item Going beyond the isotropic vision of connectivity for biopolymer gels, we want to characterize the architecture of the filaments using images from different microscopy techniques depending on the scale of the biopolymer.
-      \item How different architectures do influent the mechanical properties? Are completely different biopolymers sharing universal properties in their connectivity?
+    \item<1-> Going beyond the homogeneous and isotropic model of biopolymer networks: \textbf{Characterize the architecture} of connected filaments using images from different microscopy techniques depending on the size of the biopolymer.
+    \item<2-> How different architectures do influent the \textbf{mechanical properties}? Are completely different biopolymers sharing similar geometries?
+    \item<3-> Develop an open-source, free, user friendly, tested, and well documented software for others to use with microscopy images.
+  \end{itemize}
+  \end{exampleblock}
+\end{frame}
+\begin{frame}<beamer:0>
+  \frametitle{The limit of the isotropic approximation}
+  \begin{itemize}
+    \item The power law behaviour has derived from universal slope of 1 \cite{mackintosh_bill} to \textbf{surprisingly(?)} a slope of  3/2. We think that this data require a further explanation beyond the assumption that collagen is somehow an exception in that universality claimed years ago.
+    \item The shift to strain stiffening, or the beginning of a nematic phase of partially oriented fibers, might depend on architecture.
   \end{itemize}
 \end{frame}
 \begin{frame}
-    %[allowframbreaks]
-    \frametitle{Generating Software Tools}
-    \centering
-    \movie[height=0.75\textheight, width=\textwidth, poster, autostart, loop, showcontrols]{}{Videos/softwareShort.mp4}
-
-    \note
-    {
-        Instead of using a one time solution, I am interested in provide computational, user friendly tools for others to use.\newline
-        This has driven me to the software development side
-    }
-
-\end{frame}
-\begin{frame}
-  \frametitle{Connectivity matters}
-
-\end{frame}
-\begin{frame}
-    \frametitle{Polymer Networks: Strain Stiffen}
-    \begin{itemize}
-        \item \cite{Storm}, strain stiffening arises from non linearity of single chains.
-            Under the assumption that the network is isotropic and homogeneus.
-            What happen when the network is anisotropic, or it is partially oriented.
-        \item  \cite{hola}, at the same time an alternative explanation of strain stiffening arised from
-    network connectivity and relative orientation of the fibers.
-    \end{itemize}
-\end{frame}
-\begin{frame}
-    \frametitle{The limit of the isotropic approximation}
-    \begin{itemize}
-        \item The power law behaviour has derived from universal slope of 1 \cite{mackintosh_bill} to \textbf{surprisingly(?)} a slope of  3/2. We think that this data require a further explanation beyond the assumption that collagen is somehow an exception in that universality claimed years ago.
-        \item The shift to strain stiffening, or the beginning of a nematic phase of partially oriented fibers, might depend on architecture.
-    \end{itemize}
-\end{frame}
-\begin{frame}
-    \frametitle{Steps to characterize the network}
-\begin{itemize}
+  \frametitle{Steps to characterize the network}
+  \begin{itemize}
     \item Gathering the images. Microscopy.
     \item Image analysis. Skeletonization.
-    \item Characterize the image. Graph approach.
-    \note
-    {
+    \item Characterize the image with a graph representation.
+      \note
+      {
         Grab the structure of a diluted enough network to be suceptible of the graph approach.
         If it is too dense, probably the study of porosity would be more suitable
-    }
-\end{itemize}
+      }
+  \end{itemize}
+      \begin{center}
+      \movie[height=0.4\textheight, width=0.65\textwidth, poster, autostart, loop]{}{Videos/softwareShort.mp4}
+      \end{center}
 \end{frame}
 
-\section{Gathering structure data: Experiments.}
+\section{Gathering structure data:}
 
 \begin{frame}
-    \frametitle{Microscopy: Confocal}
+  \frametitle{Scattering: SAXS and SANS}
+  \begin{itemize}
+    \item Study of peaks and fractality at different q values provides an \textbf{averaged} structural information (mesh size, width of single-chains)
+    \item It does not require special sample preparation.
+    \item Good statistics, fast, allow study of dynamics.
+    \item \alert{But}, it does not provide explicit 3D structure of exact connectivity.
+  \end{itemize}
+    \begin{figure}[htpb]
+      \includegraphics[width=0.25\textwidth]{./Figures/saxs_pectin.png}
+      \caption*{\footnotesize{I vs q Pectin from SAXS}}
+    \end{figure}
 \end{frame}
 \begin{frame}
-    \frametitle{Microscopy: TEM}
-\end{frame}
-\begin{frame}
-    \frametitle{Scattering: SAXS}
-\end{frame}
-\begin{frame}
-  \frametitle{Comparisson of techniques.}
+  \frametitle{Microscopy: TEM and Confocal}
+  To get better architecture we need \textbf{3D microscopy}.
   \begin{columns}[T,onlytextwidth]
-    \column{0.33\textwidth}
-      Confocal
-      \begin{itemize}
-        \item Milk \item Eggs \item Potatos
-      \end{itemize}
-
-    \column{0.33\textwidth}
-      TEM
-      \begin{enumerate}
-        \item First, \item Second and \item Last.
-      \end{enumerate}
-
-    \column{0.33\textwidth}
-      SAXS
-      \begin{description}
-        \item[PowerPoint] Meeh. \item[Beamer] Yeeeha.
-      \end{description}
+      \column{0.5\textwidth}
+      \begin{exampleblock}{TEM tomography}
+          \begin{itemize}
+              \item Necessary to reach polysaccharides scale.
+              \item Sample preparation is hard. Artifacts?
+              \item \textbf{Working on validation method} comparing it with scattering.
+          \end{itemize}
+      \end{exampleblock}
+      \column{0.5\textwidth}
+      \begin{exampleblock}{Confocal}
+          \begin{itemize}
+              \item Suitable for most protein biopolymer networks.
+              \item Sample preparation is more reliable.
+          \end{itemize}
+      \end{exampleblock}
+  \end{columns}
+  \begin{columns}[T,onlytextwidth]
+  \column{0.5\textwidth}
+      \centering\includegraphics[width=0.5\textwidth]{./Figures/image_tem.png}
+  \column{0.5\textwidth}
+      \centering\includegraphics[width=0.5\textwidth]{./Figures/image_confocal.png}
   \end{columns}
 \end{frame}
 
 \section{Image Analysis}
+\begin{frame}[t]
+  \frametitle{Skeletonization I: Ridges of Distance Map}
+    \begin{exampleblock}{Goal:}
+        Process raw image data to get a spatial graph representation of the network.
+    \end{exampleblock}
+    % \noindent\rule[0.1pt]{\linewidth}{0.01pt}
+    \begin{description}[<+-| alert@+>]
+        \item<1->[Anisotropic denoise:] Denoise conserving edges. 
+        \item<1->[Binarization:] Choose threshold that best conserves architecture.
+        \item[Distance Map:] Distance to the background for each pixel.
+        \item[Ridge Detection:] Follow the highest values of the distance map.
+        \item[Branch Merging and Pruning:] Fill gaps and remove short branches.
+    \end{description}
+\begin{textblock*}{3cm}(5.1cm,6cm) % {block width} (coords)
+    \uncover<-2>{\includegraphics[width=3cm]{./Figures/fire/nucleation1.png}}
+\end{textblock*}
+\begin{textblock*}{2cm}(1.5cm,6.9cm) % {block width} (coords)
+    \tikzmark{n1}
+    \uncover<3->{\includegraphics[width=2cm]{./Figures/fire/nucleation1.png}}
+\end{textblock*}
+\begin{textblock*}{1.5cm}(7.5cm,6.5cm)
+    \tikzmark{t1}
+    \uncover<3->{\includegraphics[width=1.5cm]{./Figures/skeleton/lind.png}}
+\end{textblock*}
+\begin{textblock*}{2cm}(9.1cm,7cm)
+    \uncover<3->{\includegraphics[width=2cm]{./Figures/skeleton/aviz.png}}
+\end{textblock*}
+\begin{tikzpicture}[remember picture,overlay]
+        %\path[draw=magenta,thick,->]<3-> ([yshift=3mm]n1) to ++(0,3mm) to [out=0, in=0,distance=2.5in] (t1);
+    \path[draw=green,thick,->]<3-> ([xshift=2.2cm, yshift=-1cm]n1) -- ([xshift=-0.2cm,yshift=-1.4cm]t1);
+\end{tikzpicture}
+\end{frame}
+\begin{frame}
+  \frametitle{Skeletonization: Different methods and pre-processing}
+  \begin{columns}[onlytextwidth]
+      \column{0.45\textwidth}
+      \metroset{block=fill}
+      \begin{alertblock}{Pre-processing techniques}
+          \begin{enumerate}
+              \item Hessian Matrix: Eigenvalues to detect vesselness.
+              \item Anisotropic Difussion: Denoise, keeping edges information.
+              \item Multiscale characterization with gaussian operator.
+          \end{enumerate}
+      \end{alertblock}
+      \column{0.45\textwidth}
+      \metroset{block=fill}
+      \begin{alertblock}{Other Skeleton Methods}
+          \begin{enumerate}
+              \item Open Contours: Snakes
+              \item Template Matching
+              \item Morphology Operators
+          \end{enumerate}
+      \end{alertblock}
+  \end{columns}
+\end{frame}
+
+\section{Graph Characterization}
+\begin{frame}
+  \frametitle{Graphs: A Link to Complex Systems}
+  We can now link our spatial graph to standard complex network libraries.
+  \begin{description}[t]
+      \item[IGraph] C, R, Python (GPL licence)
+      \item[Boost: Graph and GraphParallel] C++ (MIT licence)
+      \item[NetworkX] Python (MIT licence)
+  \end{description}
+
+  \vspace{1cm}
+  \begin{columns}[onlytextwidth]
+      \column{0.33\textwidth}
+      \includegraphics[width=0.9\textwidth]{./Figures/software_logos/igraph_tittle.png}
+      \column{0.33\textwidth}
+      \includegraphics[width=0.9\textwidth]{./Figures/software_logos/boost_logo.jpeg}
+      \column{0.33\textwidth}
+      \includegraphics[width=0.9\textwidth]{./Figures/software_logos/networkx_logo.jpeg}
+  \end{columns}
+
+\end{frame}
+\begin{frame}
+  \frametitle{Generating Software Tools}
+  \centering
+  \movie[height=0.75\textheight, width=\textwidth, poster, autostart, loop, showcontrols]{}{Videos/softwareShort.mp4}
+
+  \note
+  {
+    Instead of using a one time solution, I am interested in provide computational, user friendly tools for others to use.\newline
+    This has driven me to the software development side
+  }
+\end{frame}
+\begin{frame}
+  \frametitle{Results: Proof of concept}
+  \footnotesize{
+  \uncover<1>{Three Networks analyzed:
+  \begin{columns}[onlytextwidth]
+      \column{0.5\textwidth}
+      \begin{itemize}
+      \item Polysaccharides using TEM: Pectin, Carrageenan
+      \end{itemize}
+      \column{0.5\textwidth}
+      \begin{itemize}
+          \item Proteins using Confocal: Actin (Collagen from literature \citep{lindstrom_finite-strain_2013} ).
+      \end{itemize}
+  \end{columns}
+  }
+  \uncover<2->{
+      Statistical distributions of local graph properties:
+      \alert{Showing same functional forms}
+
+      \vspace{1mm}
+  }
+  }
+  \vspace{0.5cm}
+  \centering\includegraphics[width=0.99\textwidth]{./Figures/results_poster.png}
+\end{frame}
+\begin{frame}
+  \frametitle{Summary}
+  \begin{columns}[onlytextwidth]
+      \column{0.60\textwidth}
+      \metroset{block=fill}
+      \begin{alertblock}{Digging up the network geometry}
+          \begin{itemize}
+              \item When does architecture matter? What is its role at lower scales.
+              \item Gather best image analysis techniques for biopolymers.
+              \item Link to complex network libraries for graph analysis. \textbf{Reconstruct in-silico networks from it}
+              \item \alert{The dream} would be to input force-extension curve of single chains +  network architecture to get bulk rheology. But initial configuration setup and pre-stress play a role in simulations.
+          \end{itemize}
+      \end{alertblock}
+      \column{0.40\textwidth}
+        \centering\includegraphics[width=\textwidth]{./Figures/network_model_fig.png}
+  \end{columns}
+\end{frame}
+\begin{frame}{Acknowledgments}
+
+  \vspace{0.3cm}
+  \begin{columns}[onlytextwidth]
+    \column{0.33\textwidth}
+    \includegraphics[width=0.9\textwidth]{./Figures/people/macdiarmid.png}
+    \column{0.33\textwidth}
+    \includegraphics[width=0.9\textwidth]{./Figures/people/massey.png}
+    \column{0.33\textwidth}
+    \includegraphics[width=0.9\textwidth]{./Figures/people/riddet.png}
+  \end{columns}
+  \begin{columns}[onlytextwidth]
+    \column{0.5\textwidth}
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=0.8\textwidth]{./Figures/people/bill.png}
+  \caption*{Main Advisor: \textbf{Prof. M.A.K Williams}}
+\end{figure}
+    \column{0.5\textwidth}
+    \begin{figure}[htpb]
+      \centering
+      \includegraphics[width=0.3\textwidth]{./Figures/people/brad.png}
+      \caption*{Brad Mansel, New Zealand}
+    \end{figure}
+  \end{columns}
+  \begin{columns}[onlytextwidth]
+    \column{0.45\textwidth}
+    \begin{itemize}
+      \item Andrew Leis. CSIRO Animal Health. Australia.
+      \item Leif Lundin. SP Food and Bioscience. Sweden.
+    \end{itemize}
+    \column{0.45\textwidth}
+    \textbf{Visit us in NZ or online at:}\newline
+        \url{www.biophysics.ac.nz}
+  \end{columns}
+\end{frame}
+\plain{Thanks for your attention!}
+\begin{frame}{Follow development live in github}
+  Keep up to date with further development at my github page:
+  \vspace{2mm}
+  \begin{columns}[onlytextwidth]
+    \column{0.45\textwidth}
+      \begin{center}\url{github.com/phcerdan}\end{center}
+    \column{0.45\textwidth}
+      \movie[height=0.3\textheight, width=0.8\textwidth, poster, autostart, loop]{}{Videos/softwareShort.mp4}
+  \end{columns}
+
+
+  \vspace{2mm}
+  Get this beamer theme from:
+
+  \begin{center}\url{github.com/matze/mtheme}\end{center}
+
+  \begin{center}\ccbysa\end{center}
+
+\end{frame}
+\begin{frame}[allowframebreaks]
+
+  \frametitle{References}
+
+  \bibliography{leipzig2015}
+  \bibliographystyle{plainnat}
+
+\end{frame}
+
+\end{document}
 
 % \begin{frame}{Lists}
 %   \begin{columns}[T,onlytextwidth]
@@ -315,38 +537,4 @@
 %     \end{tikzpicture}
 %   \end{figure}
 % \end{frame}
-\begin{frame}{References}
-  Some references to showcase [allowframebreaks] \cite{knuth92,ConcreteMath,Simpson,Er01,greenwade93}
-\end{frame}
 
-
-\section{Graph Characterization}
-
-\section{Conclusion}
-
-\begin{frame}{Summary}
-
-  Get the source of this theme and the demo presentation from
-
-  \begin{center}\url{github.com/matze/mtheme}\end{center}
-
-  The theme \emph{itself} is licensed under a
-  \href{http://creativecommons.org/licenses/by-sa/4.0/}{Creative Commons
-  Attribution-ShareAlike 4.0 International License}.
-
-  \begin{center}\ccbysa\end{center}
-
-\end{frame}
-
-\plain{Questions?}
-
-\begin{frame}[allowframebreaks]
-
-  \frametitle{References}
-
-  \bibliography{leipzig2015}
-  \bibliographystyle{plainnat}
-
-\end{frame}
-
-\end{document}
