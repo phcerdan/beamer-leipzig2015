@@ -1,10 +1,10 @@
 %%
-%% This is file `beamerthemem.sty',
+%% This is file `beamerthememetropolis.sty',
 %% generated with the docstrip utility.
 %%
 %% The original source files were:
 %%
-%% beamerthemem.dtx  (with options: `package')
+%% beamerthememetropolis.dtx  (with options: `package')
 %% ---------------------------------------------------------------------------
 %% Copyright 2015 Matthias Vogelgesang and the LaTeX community. A full list of
 %% contributors can be found at
@@ -17,7 +17,7 @@
 %% International License (https://creativecommons.org/licenses/by-sa/4.0/).
 %% ---------------------------------------------------------------------------
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{beamerthemem}[2015/06/12 Metropolis Beamer theme]
+\ProvidesPackage{beamerthememetropolis}[2015/12/04 Metropolis Beamer theme]
 \RequirePackage{etoolbox}
 \RequirePackage{pgfopts}
 \newcommand{\metroset}[1]{\pgfkeys{/metropolis/.cd,#1}}
@@ -33,22 +33,38 @@
   },
 }
 \pgfkeys{
-  /metropolis/plaintitleformat/.cd,
+  /metropolis/titleformat plain/.cd,
     .is choice,
-    regular/.code=\renewcommand{\@metropolis@plaintitleformat}{#1},
-    lowercase/.code={%
-      \renewcommand{\@metropolis@plaintitleformat}{\MakeLowercase{#1}}
+    regular/.code={%
+      \let\@metropolis@plaintitleformat\@empty%
+      \setbeamerfont{plain title}{shape=\normalfont}%
     },
-    uppercase/.code={%
-      \renewcommand{\@metropolis@plaintitleformat}{\MakeUppercase{#1}}
+    smallcaps/.code={%
+      \let\@metropolis@plaintitleformat\@empty%
+      \setbeamerfont{plain title}{shape=\scshape}%
+    },
+    allsmallcaps/.code={%
+      \let\@metropolis@plaintitleformat\MakeLowercase%
+      \setbeamerfont{plain title}{shape=\scshape}%
+      \PackageWarning{beamerthememetropolis}{%
+        Be aware that titleformat plain=allsmallcaps can lead to problems%
+      }
+    },
+    allcaps/.code={%
+      \let\@metropolis@plaintitleformat\MakeUppercase%
+      \setbeamerfont{plain title}{shape=\normalfont}%
+      \PackageWarning{beamerthememetropolis}{%
+        Be aware that titleformat plain=allcaps can lead to problems%
+      }
     },
 }
 \pgfkeys{
-  /metropolis/everytitleformat/.code=\pgfkeysalso{
-      inner/titleformat=#1,
-      inner/sectiontitleformat=#1,
-      outer/frametitleformat=#1,
-      plaintitleformat=#1,
+  /metropolis/titleformat/.code=\pgfkeysalso{
+      inner/titleformat title=#1,
+      inner/titleformat subtitle=#1,
+      inner/titleformat section=#1,
+      outer/titleformat frame=#1,
+      titleformat plain=#1,
     }
 }
 \pgfkeys{/metropolis/.cd,
@@ -61,7 +77,7 @@
 }
 \newcommand{\@metropolis@setdefaults}{
   \pgfkeys{/metropolis/.cd,
-    plaintitleformat=lowercase,
+    titleformat plain=regular,
   }
 }
 \useinnertheme{metropolis}
@@ -83,7 +99,7 @@
     \begin{frame}[c]{#1}
       \begin{center}
         \usebeamercolor[fg]{palette primary}
-        \usebeamerfont{section title}
+        \usebeamerfont{plain title}
         \@metropolis@plaintitleformat{#2}
       \end{center}
     \end{frame}
@@ -94,4 +110,4 @@
 \ProcessPgfOptions{/metropolis}
 \endinput
 %%
-%% End of file `beamerthemem.sty'.
+%% End of file `beamerthememetropolis.sty'.
